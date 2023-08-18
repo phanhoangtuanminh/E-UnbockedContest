@@ -1,0 +1,85 @@
+//Bài 1
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define ff(i, a, b) for(int i = a; i <= b; i++)
+#define Rep(i,a, b) for(int i = a; i >= b; i--)
+#define MP make_pair
+typedef long long ll;
+typedef pair<int, int> pi;
+const ll MAXN = 1e3 + 7;
+const ll base = 311;
+const ll INF = 1e9 + 7;
+
+vector<ll> v(MAXN);
+
+int abstract(int l, int N)
+{
+  if (l > 0)
+    return l - 1;
+  
+  return N - 1;
+}
+
+int add(int r, int N)
+{
+  return (r + 1)%N;
+}
+
+ll calculate(int pos, int N)
+{
+  ll ans = v[pos], total = v[pos];
+  int l = abstract(pos, N), r = add(pos, N);
+
+  while(true)
+  {
+    if (l != r)
+    {
+      if (v[l] <= v[r])
+        ans += max((ll)0, v[l] - total),
+        total += v[l],
+        l = abstract(l, N);
+      
+      else
+        ans += max(ll(0), v[r] - total),
+        total += v[r],
+        r = add(r, N);
+    }
+
+    if (l == r)
+    {
+      ans += max((ll)0, v[l] - total);
+      break;
+    }
+  }
+
+  return ans;
+}
+
+void solve()
+{
+  int N; cin >> N;
+  ff(i, 0, N - 1)
+    cin >> v[i];
+  
+  ll ans = INF*INF;
+
+  ff(i, 0, N - 1)
+    cout << i << " " << calculate(i, N) << "\n";
+
+  
+}
+
+
+int main()
+{
+  ios_base::sync_with_stdio(0); cin.tie(0);
+
+  // freopen("X.inp", "r", stdin);
+  // freopen("Y.out", "w", stdout);
+
+  solve();
+
+  return 0;
+}
